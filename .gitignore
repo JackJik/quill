@@ -1,0 +1,8 @@
+.build/
+.swiftpm/
+*.xcodeproj
+DerivedData/
+build/
+Quill.app/
+*.dmg
+.DS_Store
