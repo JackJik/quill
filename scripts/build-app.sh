@@ -23,9 +23,9 @@ build_with_swiftc() {
     local arch
     arch="$(uname -m)"
     case "$arch" in
-        arm64) target="arm64-apple-macos12.0" ;;
-        x86_64) target="x86_64-apple-macos12.0" ;;
-        *) target="x86_64-apple-macos12.0" ;;
+        arm64) target="arm64-apple-macos13.0" ;;
+        x86_64) target="x86_64-apple-macos13.0" ;;
+        *) target="x86_64-apple-macos13.0" ;;
     esac
     swiftc -O -sdk "$sdk" -target "$target" \
         -o "$BIN_OUT" \
