@@ -26,6 +26,20 @@ struct SnippetEditorView: View {
                         .textFieldStyle(.roundedBorder)
                     Button(action: addSnippet) { Image(systemName: "plus") }
                         .help("New snippet")
+                    Menu {
+                        Button("Import from CSV…") {
+                            CSVFileActions.importFromFile(into: SnippetStore.shared)
+                            snippets = SnippetStore.shared.snippets
+                        }
+                        Button("Export to CSV…") {
+                            CSVFileActions.exportToFile(from: SnippetStore.shared)
+                        }
+                    } label: {
+                        Image(systemName: "square.and.arrow.up.on.square")
+                    }
+                    .menuStyle(.borderlessButton)
+                    .frame(width: 32)
+                    .help("Import / export")
                 }
                 .padding(8)
 

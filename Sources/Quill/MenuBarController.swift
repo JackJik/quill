@@ -53,6 +53,18 @@ final class MenuBarController: NSObject, NSMenuDelegate {
 
         menu.addItem(.separator())
 
+        let importItem = NSMenuItem(title: "Import snippets from CSV…",
+                                    action: #selector(importCSV), keyEquivalent: "")
+        importItem.target = self
+        menu.addItem(importItem)
+
+        let exportItem = NSMenuItem(title: "Export snippets to CSV…",
+                                    action: #selector(exportCSV), keyEquivalent: "")
+        exportItem.target = self
+        menu.addItem(exportItem)
+
+        menu.addItem(.separator())
+
         let quit = NSMenuItem(title: "Quit Quill",
                               action: #selector(quit), keyEquivalent: "q")
         quit.target = self
@@ -92,6 +104,16 @@ final class MenuBarController: NSObject, NSMenuDelegate {
 
     @objc private func revealStorage() {
         NSWorkspace.shared.activateFileViewerSelecting([SnippetStore.shared.storageURL])
+    }
+
+    @objc private func importCSV() {
+        NSApp.activate(ignoringOtherApps: true)
+        CSVFileActions.importFromFile(into: SnippetStore.shared)
+    }
+
+    @objc private func exportCSV() {
+        NSApp.activate(ignoringOtherApps: true)
+        CSVFileActions.exportToFile(from: SnippetStore.shared)
     }
 
     @objc private func quit() {
