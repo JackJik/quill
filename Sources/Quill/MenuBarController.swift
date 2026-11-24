@@ -134,11 +134,13 @@ final class MenuBarController: NSObject, NSMenuDelegate {
         NSWorkspace.shared.activateFileViewerSelecting([SnippetStore.shared.storageURL])
     }
 
+    @MainActor
     @objc private func importCSV() {
         NSApp.activate(ignoringOtherApps: true)
         CSVFileActions.importFromFile(into: SnippetStore.shared)
     }
 
+    @MainActor
     @objc private func exportCSV() {
         NSApp.activate(ignoringOtherApps: true)
         CSVFileActions.exportToFile(from: SnippetStore.shared)
