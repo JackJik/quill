@@ -56,8 +56,22 @@ cp "$ROOT/Resources/Info.plist" "$APP/Contents/Info.plist"
 echo "→ Ad-hoc codesign (so macOS keeps Accessibility grants attached)"
 codesign --force --deep --sign - "$APP"
 
+INSTALLED="/Applications/Quill.app"
+if [[ "${1:-}" == "--install" || "${INSTALL:-0}" == "1" ]]; then
+    echo "→ Installing to $INSTALLED"
+    # Stop any running copy before replacing the bundle.
+    pkill -f "$INSTALLED/Contents/MacOS/Quill" 2>/dev/null || true
+    rm -rf "$INSTALLED"
+    cp -R "$APP" "$INSTALLED"
+    codesign --force --deep --sign - "$INSTALLED"
+    echo "✓ Installed $INSTALLED"
+fi
+
 echo
 echo "✓ Built $APP"
+if [[ -d "$INSTALLED" ]]; then
+    echo "  Also at:     $INSTALLED (Launchpad / Finder icon)"
+fi
 echo "  Launch:      open \"$APP\""
 echo "  First run:   grant Accessibility in System Settings → Privacy & Security → Accessibility"
 echo "  Storage:     ~/Library/Application Support/Quill/snippets.json"
