@@ -1,5 +1,6 @@
 import Cocoa
 import SwiftUI
+import Carbon.HIToolbox
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
 
@@ -8,6 +9,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let replacer = Replacer()
     private var menuBar: MenuBarController!
     private var lastBoundary: Character?
+    private var hotKey: GlobalHotKey?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Dock-less, menu-bar-only.
@@ -25,6 +27,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             self?.monitor.suspended = !enabled
         })
         menuBar.install()
+
+        // Global hot key (Control-Option-Command-Q) opens the editor even when
+        // the menu-bar icon is hidden (e.g. behind the display notch).
+        hotKey = GlobalHotKey(keyCode: UInt32(kVK_ANSI_Q),
+                              modifiers: UInt32(controlKey | optionKey | cmdKey)) { [weak self] in
+            self?.menuBar.showEditor()
+        }
 
         monitor.onEvent = { [weak self] event in
             guard let self = self else { return }

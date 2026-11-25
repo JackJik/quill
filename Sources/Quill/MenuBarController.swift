@@ -108,6 +108,9 @@ final class MenuBarController: NSObject, NSMenuDelegate {
         rebuildMenu()
     }
 
+    /// Public entry point so a global hot key can summon the editor window.
+    func showEditor() { openEditor() }
+
     @objc private func openEditor() {
         if let win = editorWindow {
             win.makeKeyAndOrderFront(nil)
