@@ -39,6 +39,51 @@ The first launch will prompt for **Accessibility permission** — Quill needs it
 
 Pretty-printed, sorted keys, ISO-8601 dates — easy to diff and keep under version control if you want. The menu bar has a **Reveal snippets file in Finder** item.
 
+## Importing snippets
+
+Two helpers under `scripts/` bring snippets in from outside. Both merge into
+your store and write a backup first, so they are safe to re-run.
+
+### From TextExpander
+
+`scripts/import-textexpander.py` imports a TextExpander export or backup:
+
+```bash
+scripts/import-textexpander.py "~/Desktop/TextExpander Backup.textexpanderbackup"
+```
+
+It accepts any of:
+
+- a classic `Settings.textexpander` plist,
+- a `*.textexpanderbackup` bundle — the folder TextExpander's **Save Backup**
+  produces (a set of `group_*.xml` files), or
+- a `.zip` of either (detected by content, so a missing `.zip` extension is fine).
+
+Snippets keep their group names, and TextExpander's abbreviation modes map to
+Quill's `word` / `immediate` triggers. Entries with no abbreviation
+(TextExpander "suggestions") are skipped, since Quill triggers only on
+abbreviations. Pass `--replace` to overwrite the store instead of merging.
+
+### Bulk autocorrect (common misspellings)
+
+`scripts/add-autocorrect-pack.py` adds a large set of `misspelling -> correction`
+pairs to an `AutoCorrect` group (word-triggered, case-insensitive):
+
+```bash
+scripts/add-autocorrect-pack.py                      # fetch the default list
+scripts/add-autocorrect-pack.py --source typos.txt   # or your own file / URL
+```
+
+With no `--source` it fetches Wikipedia's machine-readable common-misspellings
+list (~4,000 entries). That fetch is the **only** network access anywhere in
+this repo, it lives in a one-off script and never in the app, and passing a
+local path or URL to `--source` avoids it entirely. The script is idempotent —
+any abbreviation already in your store is skipped, so re-running adds nothing.
+Other flags: `--dry-run`, `--group`, `--min-len`, `--store`.
+
+After any import, quit and relaunch Quill (it also loads them on next launch)
+to pick up the new snippets.
+
 ## How it works (so you can audit it before trusting it)
 
 - `KeystrokeMonitor` uses `CGEventTap` at the session level to observe `keyDown` events only. The tap is `listenOnly`, so it cannot modify or suppress the user's keystrokes — Quill only *reads* them and separately injects its own events when it decides to expand.
