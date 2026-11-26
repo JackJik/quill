@@ -117,7 +117,7 @@ final class SnippetStore {
                     expansion: "{{time}}",
                     trigger: .immediate, group: "Dates"),
             Snippet(abbreviation: ";email",
-                    expansion: "info@tglabs.com",
+                    expansion: "you@example.com",
                     trigger: .word, group: "Contact")
         ]
         save()

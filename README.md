@@ -107,7 +107,7 @@ Seeded on first run (edit or delete freely):
 | `;sig` | your signature block |
 | `;ddate` | today's date (immediate) |
 | `;ttime` | current time (immediate) |
-| `;email` | `info@tglabs.com` |
+| `;email` | `you@example.com` |
 
 ## License
 
