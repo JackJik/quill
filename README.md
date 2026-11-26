@@ -111,4 +111,6 @@ Seeded on first run (edit or delete freely):
 
 ## License
 
-Internal to 50mm LLC / TG Labs.
+MIT — see [LICENSE](LICENSE).
+
+Built by Jack Matthews and Louis Stanford.
